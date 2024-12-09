@@ -12,14 +12,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class WebAutomation {
-    private WebDriver driver;
-    private LoginPage loginPage;
-    private InventoryPage inventoryPage;
-    private CartPage cartPage;
-    private CheckoutPage checkoutPage;
+    private static WebDriver driver;
+    private static LoginPage loginPage;
+    private static InventoryPage inventoryPage;
+    private static CartPage cartPage;
+    private static CheckoutPage checkoutPage;
 
     @BeforeClass
-    public void setUp() {
+    public static void setUp() {
         System.setProperty("webdriver.chrome.driver", "/Users/admin/Downloads/chromedriver");
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com");
@@ -37,6 +37,7 @@ public class WebAutomation {
 
     @Test
     public void testAddToCart() {
+        loginPage.login("standard_user", "secret_sauce");
         inventoryPage.addItemToCart();
         inventoryPage.goToCart();
         Assert.assertEquals(cartPage.getCartItem(), "Sauce Labs Backpack");
@@ -44,6 +45,9 @@ public class WebAutomation {
 
     @Test
     public void testCheckout() {
+        loginPage.login("standard_user", "secret_sauce");
+        inventoryPage.addItemToCart();
+        inventoryPage.goToCart();
         cartPage.checkout();
         checkoutPage.fillCheckoutInformation("Msi", "Majola", "98765");
         checkoutPage.finishCheckout();
@@ -51,7 +55,7 @@ public class WebAutomation {
     }
 
     @AfterClass
-    public void tearDown() {
+    public static void tearDown() {
         if (driver != null) {
             driver.quit();
         }
