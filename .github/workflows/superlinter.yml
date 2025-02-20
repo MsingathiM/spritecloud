@@ -37,6 +37,9 @@ jobs:
           google-chrome --version
           chromedriver --version
 
+      - name: Set ChromeDriver Path
+        run: echo "CHROMEDRIVER_PATH=$(which chromedriver)" >> $GITHUB_ENV
+
       - name: Run UI Tests
         run: |
           mvn clean install -DskipTests

@@ -21,11 +21,17 @@ public class WebAutomation {
 
     @BeforeClass
     public static void setUp() {
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        String chromeDriverPath = System.getenv("CHROMEDRIVER_PATH");
+        if (chromeDriverPath == null) {
+            chromeDriverPath = "/usr/local/bin/chromedriver"; // Default path
+        }
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+
         driver = new ChromeDriver(options);
         driver.get("https://www.saucedemo.com");
         loginPage = new LoginPage(driver);
