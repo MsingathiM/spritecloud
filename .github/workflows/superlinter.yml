@@ -27,10 +27,14 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Update package repository and install dependencies
+      - name: Add older Ubuntu repository
         run: |
+          sudo add-apt-repository 'deb http://archive.ubuntu.com/ubuntu/ bionic main universe'
           sudo apt-get update
-          sudo apt-get install -y libnss3 libgconf-2-4 || sudo apt-get install -y libgconf-2-4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y libnss3 libgconf-2-4
 
       - name: Display Chrome and ChromeDriver versions
         run: |
