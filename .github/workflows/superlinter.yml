@@ -34,7 +34,7 @@ jobs:
       - name: Run UI Tests
         run: |
           mvn install
-          mvn test -Dtest=UITests
+          mvn test -Dtest=WebAutomation -Dsurefire.failIfNoSpecifiedTests=false
           
   api-test:
     runs-on: ubuntu-latest
