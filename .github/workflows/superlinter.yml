@@ -27,8 +27,10 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Install ChromeDriver dependencies
-        run: sudo apt-get install -y libnss3 libgconf-2-4
+      - name: Update package repository and install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libgconf-2-4 || sudo apt-get install -y libgconf-2-4
 
       - name: Display Chrome and ChromeDriver versions
         run: |
@@ -48,7 +50,7 @@ jobs:
           path: |
             target/surefire-reports/
             target/chromedriver.log
-          
+
   api-test:
     runs-on: ubuntu-latest
     steps:
