@@ -24,4 +24,5 @@ mvn test -Dtest=APITests
 
 ### Assumptions
 1. I consulted AI to help with code review and provide areas for improvement and adhering to best code practices.
+2. Assume login will be valid for automation testing, so we don't have to do negative testing and thus not only focus on login, but other test scenarios
 
