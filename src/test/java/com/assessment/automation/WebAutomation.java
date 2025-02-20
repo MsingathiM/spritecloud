@@ -21,16 +21,12 @@ public class WebAutomation {
 
     @BeforeClass
     public static void setUp() {
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox");                      // Required for Linux
-        options.addArguments("--headless");                        // Run in headless mode
-        options.addArguments("--disable-dev-shm-usage");          // Overcome limited resource problems
-        options.addArguments("--remote-debugging-port=9222");     // Enable remote debugging
-        options.addArguments("--disable-gpu");                    // Disable GPU hardware acceleration
-        options.addArguments("--window-size=1920,1080");         // Set window size
-        
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
-        driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com");
         loginPage = new LoginPage(driver);
         inventoryPage = new InventoryPage(driver);
