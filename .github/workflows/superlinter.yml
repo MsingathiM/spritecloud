@@ -23,11 +23,11 @@ jobs:
           cache: 'maven'
 
       - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v1 # Use v1 for better control
         with:
           chrome-version: stable
 
-      - name: Install UI Dependencies (Corrected)
+      - name: Install UI Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libappindicator3-1 libasound2 libatk1.0-0 libcairo2 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libx11-6 libxext6 libxrender1 xvfb libxtst6
@@ -37,12 +37,9 @@ jobs:
           Xvfb :1 -screen 0 1024x768x24 &
           export DISPLAY=:1
 
-      - name: Display Check (Verify Xvfb is running)
-        run: echo $DISPLAY
-
       - name: Run UI Tests
         run: |
-          mvn clean install -DskipTests=false # Or -DskipTests if you want to skip tests
+          mvn clean install -DskipTests=false # Or remove -DskipTests if you want all tests to run by default
           mvn test -Dtest=WebAutomation -Dsurefire.failIfNoSpecifiedTests=false
 
       - name: Upload UI Test Results
@@ -50,7 +47,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ui-test-reports
-          path: target/surefire-reports/
+          path: |
+            target/surefire-reports/
+            target/chromedriver.log
 
   api-test:
     runs-on: ubuntu-latest
@@ -67,7 +66,7 @@ jobs:
 
       - name: Run API Tests
         run: |
-          mvn clean install -DskipTests=false # Or -DskipTests if you want to skip tests
+          mvn clean install -DskipTests=false # Or remove -DskipTests if you want all tests to run by default
           mvn test -Dtest=APITests
 
       - name: Upload API Test Results
