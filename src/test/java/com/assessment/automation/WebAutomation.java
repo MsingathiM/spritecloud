@@ -20,8 +20,7 @@ public class WebAutomation {
 
     @BeforeClass
     public static void setUp() {
-        String chromeDriverPath = System.getenv("CHROMEDRIVER_PATH");
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com");
         loginPage = new LoginPage(driver);
