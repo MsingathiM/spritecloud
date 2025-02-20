@@ -30,7 +30,7 @@ jobs:
       - name: Install UI Dependencies (Corrected)
         run: |
           sudo apt-get update
-          sudo apt-get install -y libappindicator3-1 libasound2 libatk1.0-0 libcairo2 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libx11-6 libxext6 libxrender1 xvfb
+          sudo apt-get install -y libappindicator3-1 libasound2 libatk1.0-0 libcairo2 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libx11-6 libxext6 libxrender1 xvfb libxtst6
 
       - name: Start Xvfb
         run: |
