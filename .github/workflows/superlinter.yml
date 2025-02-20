@@ -10,7 +10,7 @@ on:
 
 jobs:
   selenium-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,14 +27,10 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Add missing GPG key
-        run: |
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
-
-      - name: Update package repository and install dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libnss3 libgconf-2-4
+          sudo apt-get install -y libnss3
 
       - name: Display Chrome and ChromeDriver versions
         run: |
