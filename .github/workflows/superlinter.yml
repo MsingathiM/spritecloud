@@ -22,26 +22,26 @@ jobs:
           distribution: 'adopt'
           cache: 'maven'
 
-      - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1 # Use v1 for better control
+      - name: Setup Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
 
-      - name: Install UI Dependencies
+      - name: Update package repository and install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libappindicator3-1 libasound2 libatk1.0-0 libcairo2 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libx11-6 libxext6 libxrender1 xvfb libxtst6
+          sudo apt-get install -y libnss3 libgconf-2-4 || sudo apt-get install -y libgconf-2-4
 
-      - name: Start Xvfb
+      - name: Display Chrome and ChromeDriver versions
         run: |
-          Xvfb :1 -screen 0 1024x768x24 &
-          export DISPLAY=:1
+          google-chrome --version
+          chromedriver --version
 
       - name: Run UI Tests
         run: |
-          mvn clean install -DskipTests=false # Or remove -DskipTests if you want all tests to run by default
+          mvn clean install -DskipTests
           mvn test -Dtest=WebAutomation -Dsurefire.failIfNoSpecifiedTests=false
-
+        
       - name: Upload UI Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -66,7 +66,7 @@ jobs:
 
       - name: Run API Tests
         run: |
-          mvn clean install -DskipTests=false # Or remove -DskipTests if you want all tests to run by default
+          mvn clean install -DskipTests
           mvn test -Dtest=APITests
 
       - name: Upload API Test Results
