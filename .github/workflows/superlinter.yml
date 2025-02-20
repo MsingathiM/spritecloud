@@ -27,10 +27,8 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Set up ChromeDriver
-        uses: nanasess/setup-chromedriver@v2
-        with:
-          chromedriver-version: latest
+      - name: Install ChromeDriver dependencies
+        run: sudo apt-get install -y libnss3 libgconf-2-4
 
       - name: Display Chrome and ChromeDriver versions
         run: |
