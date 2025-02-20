@@ -22,24 +22,18 @@ jobs:
           distribution: 'adopt'
           cache: 'maven'
 
-      - name: Set up Chrome and ChromeDriver
+      - name: Setup Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+
+      - name: Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+        with:
+          chromedriver-version: latest
+
+      - name: Display Chrome and ChromeDriver versions
         run: |
-          # Install Chrome
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          
-          # Get Chrome version
-          CHROME_VERSION=$(google-chrome --version | awk '{ print $3 }' | cut -d'.' -f1)
-          
-          # Get matching ChromeDriver version
-          CHROMEDRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-          
-          # Download and setup ChromeDriver
-          wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip -d /usr/local/bin/
-          chmod +x /usr/local/bin/chromedriver
-          
-          # Print versions for debugging
           google-chrome --version
           chromedriver --version
 
