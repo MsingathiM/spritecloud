@@ -23,6 +23,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <test.reuseForks>false</test.reuseForks>
+        <test.forkCount>1</test.forkCount>
     </properties>
 
     <dependencies>
@@ -56,6 +58,14 @@
                         <include>**/WebAutomation.java</include>
                     </includes>
                     <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
+                    <reuseForks>false</reuseForks>
+                    <forkCount>1</forkCount>
+                    <systemPropertyVariables>
+                        <webdriver.chrome.logfile>${project.build.directory}/chromedriver.log</webdriver.chrome.logfile>
+                        <webdriver.chrome.verboseLogging>true</webdriver.chrome.verboseLogging>
+                    </systemPropertyVariables>
+                    <trimStackTrace>false</trimStackTrace>
+                    <useFile>false</useFile>
                 </configuration>
             </plugin>
         </plugins>

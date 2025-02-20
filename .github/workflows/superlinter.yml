@@ -20,23 +20,42 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'maven'
 
-      - name: Set up ChromeDriver
+      - name: Set up Chrome and ChromeDriver
         run: |
-          CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          # Install Chrome
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          
+          # Get Chrome version
+          CHROME_VERSION=$(google-chrome --version | awk '{ print $3 }' | cut -d'.' -f1)
+          
+          # Get matching ChromeDriver version
+          CHROMEDRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          
+          # Download and setup ChromeDriver
           wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip -d /usr/local/bin/
           chmod +x /usr/local/bin/chromedriver
-        env:
-          CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
-
-      - name: Set up Chrome
-        run: sudo apt-get install -y google-chrome-stable
+          
+          # Print versions for debugging
+          google-chrome --version
+          chromedriver --version
 
       - name: Run UI Tests
         run: |
-          mvn install
+          mvn clean install -DskipTests
           mvn test -Dtest=WebAutomation -Dsurefire.failIfNoSpecifiedTests=false
+        
+      - name: Upload UI Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ui-test-reports
+          path: |
+            target/surefire-reports/
+            target/chromedriver.log
           
   api-test:
     runs-on: ubuntu-latest
@@ -49,8 +68,16 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'maven'
 
       - name: Run API Tests
         run: |
-          mvn install
+          mvn clean install -DskipTests
           mvn test -Dtest=APITests
+
+      - name: Upload API Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: api-test-reports
+          path: target/surefire-reports/
