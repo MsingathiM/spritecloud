@@ -27,13 +27,13 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Add older Ubuntu repository
+      - name: Add missing GPG key
         run: |
-          sudo add-apt-repository 'deb http://archive.ubuntu.com/ubuntu/ bionic main universe'
-          sudo apt-get update
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
 
-      - name: Install dependencies
+      - name: Update package repository and install dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install -y libnss3 libgconf-2-4
 
       - name: Display Chrome and ChromeDriver versions
