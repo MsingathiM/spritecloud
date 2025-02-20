@@ -27,13 +27,18 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Install UI Dependencies
+      - name: Install UI Dependencies (Corrected)
         run: |
           sudo apt-get update
           sudo apt-get install -y libappindicator3-1 libasound2 libatk1.0-0 libcairo2 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libx11-6 libxext6 libxrender1 xvfb
 
-      - name: Set Display for UI Tests
-        uses: xvfb-action/xvfb@v2
+      - name: Start Xvfb
+        run: |
+          Xvfb :1 -screen 0 1024x768x24 &
+          export DISPLAY=:1
+
+      - name: Display Check (Verify Xvfb is running)
+        run: echo $DISPLAY
 
       - name: Run UI Tests
         run: |
